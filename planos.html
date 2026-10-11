@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planos Premium - Marketplace Max</title>
+  <style>
+    body { background: #030712; color: #f9fafb; font-family: sans-serif; padding: 20px; text-align: center; padding-bottom: 50px; }
+    h1 { color: #d4af37; margin-bottom: 8px; }
+    p { color: #9ca3af; font-size: 14px; margin-bottom: 24px; }
+    .card { background: #111827; border: 1px solid #1f2937; border-radius: 16px; padding: 20px; margin-bottom: 16px; }
+    .card.highlight { border-color: #d4af37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); }
+    .price { font-size: 24px; color: #d4af37; font-weight: bold; margin: 10px 0; }
+    .btn { background: #3b82f6; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; width: 100%; cursor: pointer; }
+    .btn-gold { background: linear-gradient(135deg, #d4af37, #b8860b); color: #030712; }
+    .btn-back { background: transparent; border: 1px solid #1f2937; color: #9ca3af; margin-top: 15px; }
+    .pix-box { background: #0b0f19; border: 1px dashed #d4af37; padding: 15px; border-radius: 12px; margin-top: 12px; display: none; text-align: left; }
+    .pix-box.open { display: block; }
+    .pix-key { background: #1f2937; padding: 8px; border-radius: 6px; font-family: monospace; font-size: 13px; color: #38bdf8; word-break: break-all; margin: 8px 0; }
+  </style>
+</head>
+<body>
+  <h1>Seja Premium</h1>
+  <p>Escolha o plano ideal e destaque os seus anúncios no Marketplace Max</p>
+
+  <div class="card">
+    <h3>Plano Gratuito</h3>
+    <div class="price">R$ 0,00</div>
+    <p>Até 3 anúncios ativos com exposição padrão.</p>
+    <button class="btn" style="background:#1f2937; color:#9ca3af;">Plano Atual</button>
+  </div>
+  <div class="card highlight">
+    <h3>Plano Max Mensal</h3>
+    <div class="price">R$ 19,90 <span style="font-size:12px; color:#9ca3af;">/mês</span></div>
+    <p>Anúncios ilimitados + Selo de Vendedor Verificado + Destaque Ouro.</p>
+    <button class="btn btn-gold" onclick="togglePix('mensal')">Pagar com Pix (R$ 19,90)</button>
+    <div class="pix-box" id="pix-mensal">
+      <p style="font-size:13px; color:#fff; margin-bottom:4px;">1. Copie a chave Pix abaixo:</p>
+      <div class="pix-key">suporte@marckteplacemax.com.br</div>
+      <p style="font-size:12px; color:#9ca3af;">2. Faça o pagamento no seu banco e clique abaixo para ativar.</p>
+      <button class="btn" style="margin-top:8px; background:#10b981;" onclick="alert('Pagamento simulado com sucesso!')">Já fiz o Pix / Ativar</button>
+    </div>
+  </div>
+
+  <div class="card highlight">
+    <h3>Plano Max Trimestral</h3>
+    <div class="price">R$ 49,90 <span style="font-size:12px; color:#9ca3af;">/3 meses</span></div>
+    <p>Economize 16%! Todos os benefícios Premium com desconto.</p>
+    <button class="btn btn-gold" onclick="togglePix('trimestral')">Pagar com Pix (R$ 49,90)</button>
+    <div class="pix-box" id="pix-trimestral">
+      <p style="font-size:13px; color:#fff; margin-bottom:4px;">1. Copie a chave Pix abaixo:</p>
+      <div class="pix-key">suporte@marckteplacemax.com.br</div>
+      <p style="font-size:12px; color:#9ca3af;">2. Faça o pagamento no seu banco e clique abaixo para ativar.</p>
+      <button class="btn" style="margin-top:8px; background:#10b981;" onclick="alert('Pagamento simulado com sucesso!')">Já fiz o Pix / Ativar</button>
+    </div>
+  </div>
+
+  <button class="btn btn-back" onclick="window.location.href='perfil.html'">← Voltar ao Perfil</button>
+
+  <script>
+    function togglePix(plano) {
+      const box = document.getElementById('pix-' + plano);
+      box.classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

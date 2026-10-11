@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marckteplace Max</title>
+  <style>
+    :root { --bg-main: #030712; --bg-card: #111827; --primary: #3b82f6; --accent: #d4af37; --text-main: #f9fafb; --text-muted: #9ca3af; --border: #1f2937; --success: #10b981; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+    body { background: var(--bg-main); color: var(--text-main); padding-bottom: 75px; }
+    header { background: var(--bg-card); padding: 16px; border-bottom: 2px solid var(--accent); text-align: center; position: sticky; top: 0; z-index: 100; }
+    header h1 { font-size: 20px; font-weight: 800; }
+    header h1 span { color: var(--accent); }
+    main { max-width: 600px; margin: 0 auto; padding: 16px; }
+    .page { display: none; }
+    .page.active { display: block; }
+    .search-box input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-main); font-size: 14px; outline: none; margin-bottom: 16px; }
+    .cats { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; }
+    .cats button { background: var(--bg-card); color: var(--text-muted); border: 1px solid var(--border); border-radius: 16px; padding: 6px 14px; font-size: 12px; cursor: pointer; white-space: nowrap; }
+    .cats button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .btn-seller { width: 100%; background: linear-gradient(135deg, var(--accent), #b8860b); color: #030712; border: none; border-radius: 12px; padding: 12px; font-weight: bold; margin-bottom: 16px; cursor: pointer; text-transform: uppercase; }
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .item { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; }
+    .item .pic { height: 100px; background: #0b0f19; display: flex; align-items: center; justify-content: center; font-size: 36px; position: relative; }
+    .item .details { padding: 10px; }
+    .item h3 { font-size: 12px; margin-bottom: 4px; }
+    .item .price { font-size: 14px; color: var(--accent); font-weight: bold; margin-bottom: 8px; }
+    .item button { width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border); padding: 6px; border-radius: 6px; font-size: 11px; cursor: pointer; }
+    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 16px; }
+    .card.highlight { border-color: var(--accent); box-shadow: 0 0 15px rgba(212, 175, 55, 0.15); }
+    .avatar { width: 70px; height: 70px; background: #0b0f19; border: 2px solid var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 12px auto; }
+    .pix-box { background: #0b0f19; border: 1px dashed var(--accent); padding: 12px; border-radius: 12px; margin-top: 12px; display: none; text-align: left; }
+    .pix-box.open { display: block; }
+    .pix-key { background: var(--border); padding: 8px; border-radius: 6px; font-family: monospace; font-size: 12px; color: #38bdf8; word-break: break-all; margin: 8px 0; }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #111827; border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px 0; z-index: 99; }
+    .nav-item { background: none; border: none; color: var(--text-muted); font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
+    .nav-item.active { color: var(--primary); }
+  </style>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#d4af37">
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js');
+      });
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <h1>Marckteplace <span>Max</span></h1>
+    <p style="font-size:11px; color:var(--text-muted);">Mobile Edition</p>
+  </header>
+
+  <main>
+    <div id="page-inicio" class="page active">
+      <div class="search-box">
+        <input type="text" id="search" placeholder="O que procura hoje?">
+      </div>
+      <div class="cats" id="category-buttons">
+        <button class="active" onclick="filterCat('Todos', this)">Todos</button>
+        <button onclick="filterCat('Veículos', this)">Veículos</button>
+        <button onclick="filterCat('Imóveis', this)">Imóveis</button>
+        <button onclick="filterCat('Tecnologia', this)">Tecnologia</button>
+      </div>
+      <button class="btn-seller" onclick="alert('Abra o modal de anúncio')">+ Anunciar um Produto</button>
+      <div style="font-size:15px; font-weight:bold; margin-bottom:10px;">Anúncios em Destaque</div>
+      <div class="grid" id="products"></div>
+    </div>
+
+    <div id="page-favoritos" class="page">
+      <h2 style="color:var(--accent); margin-bottom:15px; font-size:18px;">Meus Favoritos</h2>
+      <p style="color:var(--text-muted); font-size:14px;">Ainda não tens nenhum produto favoritado na tua lista.</p>
+    </div>
+    <div id="page-planos" class="page">
+      <h2 style="color:var(--accent); margin-bottom:6px; font-size:18px;">Planos Premium</h2>
+      <p style="color:var(--text-muted); font-size:13px; margin-bottom:20px;">Escolha o plano ideal e destaque os seus anúncios.</p>
+      
+      <div class="card">
+        <h3>Plano Gratuito</h3>
+        <div style="font-size:22px; color:var(--accent); font-weight:bold; margin:8px 0;">R$ 0,00</div>
+        <p style="font-size:13px; color:var(--text-muted);">Até 3 anúncios ativos com exposição padrão.</p>
+        <button class="btn-seller" style="margin-top:12px; background:var(--border); color:var(--text-muted);">Plano Atual</button>
+      </div>
+
+      <div class="card highlight">
+        <h3>Plano Max Mensal</h3>
+        <div style="font-size:22px; color:var(--accent); font-weight:bold; margin:8px 0;">R$ 19,90 <span style="font-size:11px; color:var(--text-muted);">/mês</span></div>
+        <p style="font-size:13px; color:var(--text-muted);">Anúncios ilimitados + Selo de Vendedor Verificado.</p>
+        <button class="btn-seller" style="margin-top:12px;" onclick="togglePix('mensal')">Pagar com Pix (R$ 19,90)</button>
+        <div class="pix-box" id="pix-mensal">
+          <p style="font-size:12px; color:#fff; margin-bottom:4px;">1. Copie a chave Pix:</p>
+          <div class="pix-key">suporte@marckteplacemax.com.br</div>
+          <p style="font-size:11px; color:var(--text-muted);">2. Pague no banco e ative abaixo:</p>
+          <button class="btn-seller" style="margin-top:8px; background:var(--success); color:#fff;" onclick="alert('Pagamento simulado com sucesso! Plano Mensal ativado!')">Já fiz o Pix / Ativar</button>
+        </div>
+      </div>
+
+      <div class="card highlight">
+        <h3>Plano Max Trimestral</h3>
+        <div style="font-size:22px; color:var(--accent); font-weight:bold; margin:8px 0;">R$ 49,90 <span style="font-size:11px; color:var(--text-muted);">/3 meses</span></div>
+        <p style="font-size:13px; color:var(--text-muted);">Economize 16%! Todos os benefícios com desconto.</p>
+        <button class="btn-seller" style="margin-top:12px;" onclick="togglePix('trimestral')">Pagar com Pix (R$ 49,90)</button>
+        <div class="pix-box" id="pix-trimestral">
+          <p style="font-size:12px; color:#fff; margin-bottom:4px;">1. Copie a chave Pix:</p>
+          <div class="pix-key">suporte@marckteplacemax.com.br</div>
+          <p style="font-size:11px; color:var(--text-muted);">2. Pague no banco e ative abaixo:</p>
+          <button class="btn-seller" style="margin-top:8px; background:var(--success); color:#fff;" onclick="alert('Pagamento simulado com sucesso! Plano Trimestral ativado!')">Já fiz o Pix / Ativar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="page-perfil" class="page">
+      <h2 style="color:var(--accent); margin-bottom:15px; font-size:18px;">Meu Perfil</h2>
+      <div class="card" style="text-align:left;">
+        <div class="avatar">👤</div>
+        <div style="font-size:16px; font-weight:bold; text-align:center; color:#fff;">Carlos Oliveira</div>
+        <span style="display:block; text-align:center; color:var(--accent); font-size:11px; margin-top:2px; font-weight:bold;">Plano Gratuito</span>
+        
+        <div style="margin-top:14px; border-top:1px solid var(--border); padding-top:10px; font-size:13px; color:var(--text-muted);">
+          <p style="margin-bottom:6px;">📧 <strong>E-mail:</strong> carlos@email.com</p>
+          <p style="margin-bottom:6px;">📱 <strong>Telefone:</strong> (11) 99999-8888</p>
+          <p style="margin-bottom:6px;">📍 <strong>Localização:</strong> São Paulo - SP</p>
+          <p style="margin-bottom:6px;">📦 <strong>Anúncios ativos:</strong> 2 de 3 permitidos</p>
+        </div>
+        <button class="btn-seller" style="margin-top:14px; margin-bottom:0;" onclick="switchPage('planos', document.querySelectorAll('.nav-item')[2])">⭐ Fazer Upgrade para Max Premium</button>
+      </div>
+    </div>
+  </main>
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="switchPage('inicio', this)"><span>🏠</span>Início</button>
+    <button class="nav-item" onclick="switchPage('favoritos', this)"><span>❤️</span>Favoritos</button>
+    <button class="nav-item" onclick="switchPage('planos', this)"><span>⭐</span>Planos</button>
+    <button class="nav-item" onclick="switchPage('perfil', this)"><span>👤</span>Perfil</button>
+  </nav>
+
+  <script>
+    const products = [
+      { id: 1, name: "Carro Sedan 2020 Completo", cat: "Veículos", price: 45000.00, icon: "🚗" },
+      { id: 2, name: "Moto 160cc 2022", cat: "Veículos", price: 13500.00, icon: "🏍️" },
+      { id: 3, name: "Apartamento 2 Quartos", cat: "Imóveis", price: 180000.00, icon: "🏠" },
+      { id: 4, name: "Fone Bluetooth Max Pro", cat: "Tecnologia", price: 159.90, icon: "🎧" }
+    ];
+    let currentCategory = "Todos";
+
+    function switchPage(pageId, btn) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + pageId).classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      if(btn) btn.classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    function filterCat(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll(".cats button").forEach(b => b.classList.remove("active"));
+      if(btn) btn.classList.add("active");
+      render();
+    }
+
+    function render() {
+      const q = document.getElementById("search").value.toLowerCase();
+      let list = products.filter(p => (currentCategory === "Todos" || p.cat === currentCategory) && p.name.toLowerCase().includes(q));
+      const container = document.getElementById("products");
+      container.innerHTML = list.map(p => `
+        <article class="item">
+          <div class="pic">${p.icon}<button style="position:absolute; top:6px; right:6px; background:rgba(0,0,0,0.5); border:none; border-radius:50%; width:24px; height:24px; cursor:pointer;" onclick="alert('Favorito!')">🤍</button></div>
+          <div class="details">
+            <h3>${p.name}</h3>
+            <div class="price">${p.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+            <button onclick="alert('Detalhes do produto')">Ver Detalhes</button>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function togglePix(plano) {
+      const box = document.getElementById('pix-' + plano);
+      box.classList.toggle('open');
+    }
+
+    document.getElementById("search").addEventListener("input", render);
+    render();
+  </script>
+</body>
+</html>
