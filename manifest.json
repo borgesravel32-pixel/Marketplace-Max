@@ -1,26 +1,21 @@
 {
-  "id": "./",
-  "name": "Marckteplace Max",
-  "short_name": "Max",
-  "description": "Marketplace de veículos, imóveis e produtos.",
-  "lang": "pt-BR",
-  "start_url": "./index.html",
-  "scope": "./",
-  "display": "standalone",
-  "background_color": "#030712",
-  "theme_color": "#030712",
+  "short_name": "MarckteplaceMax",
+  "name": "Marckteplace Max - Venda Mais",
   "icons": [
     {
-      "src": "icon-192.svg",
-      "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "src": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=192",
+      "type": "image/png",
+      "sizes": "192x192"
     },
     {
-      "src": "icon-512.svg",
-      "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "src": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=512",
+      "type": "image/png",
+      "sizes": "512x512"
     }
-  ]
+  ],
+  "start_url": "/Marketplace-Max/",
+  "background_color": "#030712",
+  "theme_color": "#030712",
+  "display": "standalone",
+  "orientation": "portrait"
 }
