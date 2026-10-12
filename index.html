@@ -38,6 +38,15 @@
     .nav-btn i { font-size: 18px; }
     .btn-action { width: 100%; background: #2563eb; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: bold; margin-top: 8px; cursor: pointer; }
     .btn-green { background: #059669; }
+    
+    /* MODAL DE NOVO ANÚNCIO */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); z-index: 60; display: none; align-items: center; justify-content: center; padding: 16px; }
+    .modal-overlay.open { display: flex; }
+    .modal-card { background: #0b0f19; border: 1px solid #1f2937; border-radius: 20px; width: 100%; max-width: 420px; padding: 20px; color: white; }
+    .modal-card h2 { font-size: 16px; font-weight: bold; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { font-size: 11px; color: #9ca3af; display: block; margin-bottom: 4px; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; background: #030712; border: 1px solid #374151; padding: 10px 12px; border-radius: 10px; color: white; font-size: 12px; }
   </style>
 </head>
 <body>
@@ -52,7 +61,6 @@
     <button onclick="alert('Menu')" style="background: none; border: none; color: white; font-size: 18px;"><i class="fa-solid fa-bars"></i></button>
   </header>
   <main>
-    <!-- TELA 1: INÍCIO -->
     <section id="screen-home" class="screen active">
       <div class="banner">
         <h2>O lugar certo para você <span style="color: #60a5fa;">comprar e vender!</span></h2>
@@ -93,7 +101,6 @@
       </div>
     </section>
 
-    <!-- TELA 3: BUSCA -->
     <section id="screen-search" class="screen">
       <h2 style="font-size: 16px; margin-bottom: 12px; color: white;">Buscar Veículos</h2>
       <div class="card-product" onclick="switchScreen('screen-detail')">
@@ -104,41 +111,57 @@
           <p class="price">R$ 89.900</p>
         </div>
       </div>
-      <div class="card-product" onclick="switchScreen('screen-detail')">
-        <img src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=400">
-        <div class="card-info">
-          <h4 style="font-size: 13px; color: white;">Honda Civic 2018</h4>
-          <p style="font-size: 10px; color: #9ca3af;">Automático • 2.0 • Flex</p>
-          <p class="price">R$ 76.900</p>
-        </div>
-      </div>
     </section>
 
-    <!-- TELA 4: DETALHES -->
     <section id="screen-detail" class="screen">
       <button onclick="switchScreen('screen-home')" style="background:none; border:none; color:#9ca3af; margin-bottom:12px; cursor:pointer;"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
       <img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800" style="width:100%; height:200px; object-fit:cover; border-radius:16px;">
       <h2 style="font-size: 18px; margin-top: 12px; color: white;">Toyota Corolla 2020</h2>
       <p class="price" style="font-size: 22px; margin: 8px 0;">R$ 89.900</p>
-      <p style="font-size: 12px; color: #9ca3af; margin-bottom: 16px;">Carro em ótimo estado, revisões em dia, completo e económico.</p>
       <button class="btn-action" onclick="alert('Conversa iniciada!')">Falar com o vendedor</button>
-      <button class="btn-action btn-green" onclick="alert('Proposta enviada!')">Comprar agora</button>
     </section>
 
-    <!-- TELA 6: PERFIL -->
     <section id="screen-profile" class="screen">
       <div style="text-align: center; padding: 20px 0;">
         <div style="width: 70px; height: 70px; background: #2563eb; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; color: white;">RB</div>
         <h2 style="font-size: 16px; color: white;">Ravel Borges</h2>
-        <p style="font-size: 11px; color: #60a5fa;">Conta Verificada</p>
       </div>
       <button class="btn-action" style="background:#374151;" onclick="switchScreen('screen-home')">Sair da conta</button>
     </section>
   </main>
+
+  <!-- MODAL DE NOVO ANÚNCIO -->
+  <div id="modal-ad" class="modal-overlay">
+    <div class="modal-card">
+      <h2><span>Criar Novo Anúncio</span><i class="fa-solid fa-xmark" onclick="toggleAdModal()" style="cursor:pointer; color:#9ca3af;"></i></h2>
+      <div class="form-group">
+        <label>Título do Anúncio</label>
+        <input type="text" placeholder="Ex: Honda Civic 2020 Completo">
+      </div>
+      <div class="form-group">
+        <label>Categoria</label>
+        <select>
+          <option>Veículos</option>
+          <option>Imóveis</option>
+          <option>Acessórios</option>
+          <option>Outros</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Preço (R$)</label>
+        <input type="number" placeholder="0,00">
+      </div>
+      <div class="form-group">
+        <label>Descrição</label>
+        <textarea rows="3" placeholder="Descreva os detalhes do produto..."></textarea>
+      </div>
+      <button class="btn-action" onclick="publishAd()">Publicar Anúncio</button>
+    </div>
+  </div>
   <nav class="bottom-nav">
     <button class="nav-btn active" onclick="switchScreen('screen-home')"><i class="fa-solid fa-house"></i>Início</button>
     <button class="nav-btn" onclick="switchScreen('screen-search')"><i class="fa-solid fa-magnifying-glass"></i>Buscar</button>
-    <button class="nav-btn" onclick="alert('Novo Anúncio')"><i class="fa-solid fa-square-plus" style="color:#2563eb; font-size:22px;"></i>Anúncios</button>
+    <button class="nav-btn" onclick="toggleAdModal()"><i class="fa-solid fa-square-plus" style="color:#2563eb; font-size:22px;"></i>Anúncios</button>
     <button class="nav-btn" onclick="switchScreen('screen-detail')"><i class="fa-solid fa-comments"></i>Mensagens</button>
     <button class="nav-btn" onclick="switchScreen('screen-profile')"><i class="fa-solid fa-user"></i>Perfil</button>
   </nav>
@@ -150,6 +173,14 @@
       const target = document.getElementById(screenId);
       if(target) target.classList.add('active');
       window.scrollTo(0,0);
+    }
+    function toggleAdModal() {
+      const modal = document.getElementById('modal-ad');
+      modal.classList.toggle('open');
+    }
+    function publishAd() {
+      alert('Anúncio cadastrado com sucesso!');
+      toggleAdModal();
     }
   </script>
 </body>
