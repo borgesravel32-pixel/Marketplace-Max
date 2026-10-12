@@ -6,299 +6,141 @@
   <title>Marckteplace Max</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#030712">
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { background-color: #030712; color: #f3f4f6; font-family: system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
-    .screen { display: none; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: #030712; color: #f3f4f6; font-family: system-ui, -apple-system, sans-serif; padding-bottom: 70px; }
+    header { position: sticky; top: 0; z-index: 40; background: #030712; border-bottom: 1px solid #1f2937; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+    .logo-box { width: 36px; height: 36px; background: #2563eb; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; }
+    .screen { display: none; padding: 16px; max-width: 500px; margin: 0 auto; }
     .screen.active { display: block; }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .banner { background: linear-gradient(135deg, #0f172a, #1e1b4b); border: 1px solid #1e3a8a; border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+    .banner h2 { font-size: 18px; margin-bottom: 6px; }
+    .banner p { font-size: 12px; color: #9ca3af; }
+    .search-box { position: relative; margin-top: 12px; width: 100%; }
+    .search-box input { width: 100%; background: #0b0f19; border: 1px solid #374151; padding: 12px 12px 12px 38px; border-radius: 12px; color: white; font-size: 13px; }
+    .search-box i { position: absolute; left: 12px; top: 14px; color: #6b7280; }
+    .grid-cat { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .cat-card { padding: 14px; border-radius: 16px; height: 100px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; color: white; }
+    .cat-blue { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+    .cat-green { background: linear-gradient(135deg, #059669, #047857); }
+    .cat-purple { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+    .cat-orange { background: linear-gradient(135deg, #ea580c, #c2410c); }
+    .cat-card h3 { font-size: 14px; font-weight: bold; }
+    .cat-card p { font-size: 10px; opacity: 0.8; }
+    .card-product { background: #0b0f19; border: 1px solid #1f2937; border-radius: 16px; overflow: hidden; margin-bottom: 12px; cursor: pointer; display: flex; }
+    .card-product img { width: 120px; height: 100px; object-fit: cover; }
+    .card-info { padding: 12px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .price { font-size: 16px; font-weight: bold; color: #60a5fa; }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #0b0f19; border-top: 1px solid #1f2937; display: flex; justify-content: space-around; padding: 10px 0; z-index: 50; }
+    .nav-btn { background: none; border: none; color: #6b7280; font-size: 10px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+    .nav-btn.active { color: #3b82f6; }
+    .nav-btn i { font-size: 18px; }
+    .btn-action { width: 100%; background: #2563eb; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: bold; margin-top: 8px; cursor: pointer; }
+    .btn-green { background: #059669; }
   </style>
 </head>
-<body class="pb-24 select-none">
-  <header class="sticky top-0 z-40 bg-[#030712]/95 backdrop-blur-md px-4 py-3 border-b border-gray-800/80 flex items-center justify-between">
-    <div class="flex items-center space-x-2.5 cursor-pointer" onclick="switchScreen('screen-home')">
-      <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-extrabold text-white text-lg shadow-lg shadow-blue-600/30">M</div>
+<body>
+  <header>
+    <div style="display: flex; align-items: center; gap: 10px;" onclick="switchScreen('screen-home')">
+      <div class="logo-box">M</div>
       <div>
-        <h1 class="text-sm font-bold tracking-wide leading-tight text-white">Marckteplace Max</h1>
-        <span class="text-[10px] text-blue-400 font-semibold">Venda Mais</span>
+        <h1 style="font-size: 14px; color: white;">Marckteplace Max</h1>
+        <span style="font-size: 10px; color: #60a5fa;">Venda Mais</span>
       </div>
     </div>
-    <div class="flex items-center space-x-3">
-      <button onclick="alert('Notificações')" class="text-gray-300 hover:text-white p-1.5 rounded-full bg-gray-900 border border-gray-800"><i class="fa-regular fa-bell text-sm"></i></button>
-      <button onclick="toggleMenu()" class="text-gray-300 hover:text-white p-1.5 rounded-full bg-gray-900 border border-gray-800"><i class="fa-solid fa-bars text-sm"></i></button>
-    </div>
+    <button onclick="alert('Menu')" style="background: none; border: none; color: white; font-size: 18px;"><i class="fa-solid fa-bars"></i></button>
   </header>
-  <div id="drawer-menu" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden transition-opacity">
-    <div class="w-4/5 max-w-xs bg-[#0b0f19] h-full p-5 flex flex-col justify-between border-r border-gray-800 shadow-2xl">
-      <div>
-        <div class="flex items-center justify-between mb-8">
-          <div class="flex items-center space-x-2.5">
-            <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-bold text-white shadow-lg shadow-blue-600/30">M</div>
-            <div>
-              <h2 class="text-sm font-bold text-white">Marckteplace Max</h2>
-              <p class="text-[10px] text-gray-400">Venda Mais</p>
-            </div>
-          </div>
-          <button onclick="toggleMenu()" class="text-gray-400 hover:text-white p-2"><i class="fa-solid fa-xmark text-lg"></i></button>
-        </div>
-        <nav class="space-y-1.5">
-          <button onclick="navigateAndClose('screen-home')" class="w-full flex items-center space-x-3 px-3.5 py-3 rounded-xl hover:bg-gray-800/80 text-gray-300 hover:text-white text-sm font-medium"><i class="fa-solid fa-house w-5 text-blue-500"></i><span>Início</span></button>
-          <button onclick="navigateAndClose('screen-search')" class="w-full flex items-center space-x-3 px-3.5 py-3 rounded-xl hover:bg-gray-800/80 text-gray-300 hover:text-white text-sm font-medium"><i class="fa-solid fa-magnifying-glass w-5 text-blue-400"><span>Buscar</span></button>
-          <button onclick="navigateAndClose('screen-categories')" class="w-full flex items-center space-x-3 px-3.5 py-3 rounded-xl hover:bg-gray-800/80 text-gray-300 hover:text-white text-sm font-medium"><i class="fa-solid fa-square-plus w-5 text-blue-500"></i><span>Anúncios</span></button>
-          <button onclick="navigateAndClose('screen-messages')" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl hover:bg-gray-800/80 text-gray-300 hover:text-white text-sm font-medium">
-            <div class="flex items-center space-x-3"><i class="fa-solid fa-comments w-5 text-blue-400"></i><span>Mensagens</span></div>
-            <span class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">3</span>
-          </button>
-          <button onclick="navigateAndClose('screen-profile')" class="w-full flex items-center space-x-3 px-3.5 py-3 rounded-xl hover:bg-gray-800/80 text-gray-300 hover:text-white text-sm font-medium"><i class="fa-solid fa-heart w-5 text-rose-500"></i><span>Favoritos</span></button>
-          <button onclick="navigateAndClose('screen-profile')" class="w-full flex items-center space-x-3 px-3.5 py-3 rounded-xl hover:bg-gray-800/80 text-gray-300 hover:text-white text-sm font-medium"><i class="fa-solid fa-user w-5 text-gray-400"></i><span>Meu Perfil</span></button>
-          <button onclick="navigateAndClose('screen-plans')" class="w-full flex items-center space-x-3 px-3.5 py-3 rounded-xl hover:bg-gray-800/80 text-gray-300 hover:text-white text-sm font-medium"><i class="fa-solid fa-crown w-5 text-amber-400"></i><span>Planos</span></button>
-          <button onclick="alert('Configurações')" class="w-full flex items-center space-x-3 px-3.5 py-3 rounded-xl hover:bg-gray-800/80 text-gray-300 hover:text-white text-sm font-medium"><i class="fa-solid fa-gear w-5 text-gray-400"></i><span>Configurações</span></button>
-          <button onclick="alert('Suporte')" class="w-full flex items-center space-x-3 px-3.5 py-3 rounded-xl hover:bg-gray-800/80 text-gray-300 hover:text-white text-sm font-medium"><i class="fa-solid fa-circle-question w-5 text-gray-400"></i><span>Suporte</span></button>
-        </nav>
-      </div>
-      <div class="pb-2">
-        <button onclick="alert('Saindo...')" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl text-sm font-semibold shadow-lg shadow-blue-600/30 transition">Sair da conta</button>
-        <p class="text-center text-[10px] text-gray-500 mt-3">Mais oportunidades para você!</p>
-      </div>
-    </div>
-  </div>
-  <main class="max-w-md mx-auto p-4 space-y-5">
-    <section id="screen-home" class="screen active space-y-5">
-      <div class="space-y-1">
-        <h2 class="text-xl font-black text-white leading-tight">O lugar certo para você <span class="text-blue-500">comprar e vender!</span></h2>
-        <p class="text-xs text-gray-400">Carros, motos, imóveis, acessórios e muito mais. Tudo em um só lugar!</p>
-      </div>
-      <div class="relative">
-        <input type="text" placeholder="O que você está procurando?" onclick="switchScreen('screen-search')" class="w-full bg-[#0b0f19] border border-gray-800 text-xs rounded-2xl pl-10 pr-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500">
-        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-4 text-gray-500 text-xs"></i>
-      </div>
-      <div class="grid grid-cols-2 gap-3">
-        <div onclick="switchScreen('screen-search')" class="bg-gradient-to-br from-blue-600 to-blue-700 p-4 rounded-2xl flex flex-col justify-between h-28 cursor-pointer shadow-lg shadow-blue-600/20">
-          <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-white"><i class="fa-solid fa-car text-base"></i></div>
-          <div><h3 class="text-sm font-bold text-white">Veículos</h3><p class="text-[10px] text-blue-100">Carros e motos</p></div>
-        </div>
-        <div onclick="switchScreen('screen-categories')" class="bg-gradient-to-br from-emerald-600 to-emerald-700 p-4 rounded-2xl flex flex-col justify-between h-28 cursor-pointer shadow-lg shadow-emerald-600/20">
-          <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-white"><i class="fa-solid fa-house text-base"></i></div>
-          <div><h3 class="text-sm font-bold text-white">Imóveis</h3><p class="text-[10px] text-emerald-100">Casas e apartamentos</p></div>
-        </div>
-        <div onclick="switchScreen('screen-categories')" class="bg-gradient-to-br from-indigo-600 to-purple-700 p-4 rounded-2xl flex flex-col justify-between h-28 cursor-pointer shadow-lg shadow-indigo-600/20">
-          <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-white"><i class="fa-solid fa-bag-shopping text-base"></i></div>
-          <div><h3 class="text-sm font-bold text-white">Acessórios</h3><p class="text-[10px] text-purple-100">Eletrônicos, moda e mais</p></div>
-        </div>
-        <div onclick="switchScreen('screen-categories')" class="bg-gradient-to-br from-amber-600 to-orange-700 p-4 rounded-2xl flex flex-col justify-between h-28 cursor-pointer shadow-lg shadow-amber-600/20">
-          <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-white"><i class="fa-solid fa-boxes-stacked text-base"></i></div>
-          <div><h3 class="text-sm font-bold text-white">Outros</h3><p class="text-[10px] text-orange-100">Diversos produtos</p></div>
+  <main>
+    <!-- TELA 1: INÍCIO -->
+    <section id="screen-home" class="screen active">
+      <div class="banner">
+        <h2>O lugar certo para você <span style="color: #60a5fa;">comprar e vender!</span></h2>
+        <p>Carros, motos, imóveis e muito mais.</p>
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="O que procura hoje?" onclick="switchScreen('screen-search')">
         </div>
       </div>
-      <div>
-        <div class="flex items-center justify-between mb-3">
-          <h3 class="text-base font-bold text-white">Destaques</h3>
-          <button onclick="switchScreen('screen-search')" class="text-xs text-blue-400 font-semibold">Ver todos &gt;</button>
+
+      <div class="grid-cat">
+        <div class="cat-card cat-blue" onclick="switchScreen('screen-search')">
+          <i class="fa-solid fa-car" style="font-size: 20px;"></i>
+          <div><h3>Veículos</h3><p>Carros e motos</p></div>
         </div>
-        <div onclick="openProduct('Toyota Corolla 2020', 'R$ 89.900', 'Automático • 1.8 • Gasolina', 'São Paulo - SP')" class="bg-[#0b0f19] border border-gray-800/80 rounded-2xl overflow-hidden cursor-pointer shadow-md">
-          <div class="relative h-48 bg-gray-800">
-            <img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800" class="w-full h-full object-cover">
-            <button onclick="event.stopPropagation(); alert('Favoritado!');" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white hover:text-rose-500"><i class="fa-regular fa-heart text-sm"></i></button>
-          </div>
-          <div class="p-4">
-            <h4 class="text-sm font-bold text-white">Toyota Corolla 2020</h4>
-            <p class="text-base font-extrabold text-blue-400 mt-1">R$ 89.900</p>
-          </div>
+        <div class="cat-card cat-green" onclick="switchScreen('screen-search')">
+          <i class="fa-solid fa-house" style="font-size: 20px;"></i>
+          <div><h3>Imóveis</h3><p>Casas e aptos</p></div>
         </div>
-      </div>
-    </section>
-    <section id="screen-categories" class="screen space-y-4">
-      <div class="bg-gradient-to-r from-blue-900/40 to-blue-950/60 p-4 rounded-2xl border border-blue-800/40">
-        <h2 class="text-lg font-bold text-white">Encontre o que você precisa!</h2>
-        <p class="text-xs text-gray-300 mt-1">Navegue pelas categorias e descubra as melhores ofertas.</p>
-      </div>
-      <div class="space-y-3">
-        <div onclick="switchScreen('screen-search')" class="bg-blue-600/20 border border-blue-500/30 p-4 rounded-2xl flex items-center justify-between cursor-pointer">
-          <div class="flex items-center space-x-3.5">
-            <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white"><i class="fa-solid fa-car"></i></div>
-            <div><h3 class="font-bold text-white text-sm">Veículos</h3><p class="text-xs text-gray-400">Carros e motos</p></div>
-          </div>
-          <i class="fa-solid fa-arrow-right text-gray-400 text-xs"></i>
+        <div class="cat-card cat-purple" onclick="switchScreen('screen-search')">
+          <i class="fa-solid fa-bag-shopping" style="font-size: 20px;"></i>
+          <div><h3>Acessórios</h3><p>Eletrónicos</p></div>
         </div>
-        <div onclick="switchScreen('screen-search')" class="bg-emerald-600/20 border border-emerald-500/30 p-4 rounded-2xl flex items-center justify-between cursor-pointer">
-          <div class="flex items-center space-x-3.5">
-            <div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white"><i class="fa-solid fa-house"></i></div>
-            <div><h3 class="font-bold text-white text-sm">Imóveis</h3><p class="text-xs text-gray-400">Casas e apartamentos</p></div>
-          </div>
-          <i class="fa-solid fa-arrow-right text-gray-400 text-xs"></i>
-        </div>
-        <div onclick="switchScreen('screen-search')" class="bg-purple-600/20 border border-purple-500/30 p-4 rounded-2xl flex items-center justify-between cursor-pointer">
-          <div class="flex items-center space-x-3.5">
-            <div class="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center text-white"><i class="fa-solid fa-bag-shopping"></i></div>
-            <div><h3 class="font-bold text-white text-sm">Acessórios</h3><p class="text-xs text-gray-400">Eletrônicos, moda e mais</p></div>
-          </div>
-          <i class="fa-solid fa-arrow-right text-gray-400 text-xs"></i>
-        </div>
-        <div onclick="switchScreen('screen-search')" class="bg-amber-600/20 border border-amber-500/30 p-4 rounded-2xl flex items-center justify-between cursor-pointer">
-          <div class="flex items-center space-x-3.5">
-            <div class="w-10 h-10 rounded-xl bg-amber-600 flex items-center justify-center text-white"><i class="fa-solid fa-wrench"></i></div>
-            <div><h3 class="font-bold text-white text-sm">Serviços</h3><p class="text-xs text-gray-400">Profissionais e muito mais</p></div>
-          </div>
-          <i class="fa-solid fa-arrow-right text-gray-400 text-xs"></i>
+        <div class="cat-card cat-orange" onclick="switchScreen('screen-search')">
+          <i class="fa-solid fa-boxes-stacked" style="font-size: 20px;"></i>
+          <div><h3>Outros</h3><p>Diversos</p></div>
         </div>
       </div>
-    </section>
-    <section id="screen-search" class="screen space-y-4">
-      <div class="flex items-center space-x-2">
-        <div class="relative flex-1">
-          <input type="text" placeholder="Buscar veículos..." class="w-full bg-[#0b0f19] border border-gray-800 text-xs rounded-xl pl-9 pr-3 py-3 text-white">
-          <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-gray-500 text-xs"></i>
-        </div>
-        <button class="bg-[#0b0f19] border border-gray-800 px-3.5 py-3 rounded-xl text-xs text-gray-300"><i class="fa-solid fa-sliders"></i></button>
-      </div>
-      <div class="flex space-x-2 overflow-x-auto no-scrollbar py-1">
-        <button class="bg-blue-600 text-white text-xs font-semibold px-4 py-2 rounded-full whitespace-nowrap shadow-md">Todos</button>
-        <button class="bg-[#0b0f19] border border-gray-800 text-gray-300 text-xs font-medium px-4 py-2 rounded-full whitespace-nowrap">Carros</button>
-        <button class="bg-[#0b0f19] border border-gray-800 text-gray-300 text-xs font-medium px-4 py-2 rounded-full whitespace-nowrap">Motos</button>
-        <button class="bg-[#0b0f19] border border-gray-800 text-gray-300 text-xs font-medium px-4 py-2 rounded-full whitespace-nowrap">Caminhonetes</button>
-      </div>
-      <div class="space-y-3">
-        <div onclick="openProduct('Toyota Corolla 2020', 'R$ 89.900', 'Automático • 1.8 • Gasolina', 'São Paulo - SP')" class="bg-[#0b0f19] border border-gray-800/80 rounded-2xl overflow-hidden flex cursor-pointer">
-          <div class="relative w-32 h-30 bg-gray-800"><img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400" class="w-full h-full object-cover"><span class="absolute top-2 left-2 bg-blue-600 text-[8px] font-bold px-2 py-0.5 rounded text-white">Destaque</span></div>
-          <div class="p-3.5 flex-1 flex flex-col justify-between">
-            <div>
-              <div class="flex justify-between items-start"><h4 class="text-xs font-bold text-white">Toyota Corolla 2020</h4><button onclick="event.stopPropagation(); alert('Favoritado!');" class="text-gray-400 hover:text-rose-500"><i class="fa-regular fa-heart text-xs"></i></button></div>
-              <p class="text-[10px] text-gray-400 mt-1">Automático • 1.8 • Gasolina</p>
-            </div>
-            <div><p class="text-sm font-extrabold text-blue-400">R$ 89.900</p><p class="text-[9px] text-gray-500 mt-0.5"><i class="fa-solid fa-location-dot"></i> São Paulo - SP</p></div>
-          </div>
-        </div>
-        <div onclick="openProduct('Honda Civic 2018', 'R$ 76.900', 'Automático • 2.0 • Flex', 'Campinas - SP')" class="bg-[#0b0f19] border border-gray-800/80 rounded-2xl overflow-hidden flex cursor-pointer">
-          <div class="relative w-32 h-30 bg-gray-800"><img src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=400" class="w-full h-full object-cover"></div>
-          <div class="p-3.5 flex-1 flex flex-col justify-between">
-            <div>
-              <div class="flex justify-between items-start"><h4 class="text-xs font-bold text-white">Honda Civic 2018</h4><button onclick="event.stopPropagation(); alert('Favoritado!');" class="text-gray-400 hover:text-rose-500"><i class="fa-regular fa-heart text-xs"></i></button></div>
-              <p class="text-[10px] text-gray-400 mt-1">Automático • 2.0 • Flex</p>
-            </div>
-            <div><p class="text-sm font-extrabold text-blue-400">R$ 76.900</p><p class="text-[9px] text-gray-500 mt-0.5"><i class="fa-solid fa-location-dot"></i> Campinas - SP</p></div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section id="screen-detail" class="screen space-y-4">
-      <button onclick="switchScreen('screen-search')" class="text-xs text-gray-400 flex items-center space-x-1.5 py-1"><i class="fa-solid fa-arrow-left"></i><span>Voltar</span></button>
-      <div class="relative h-60 bg-gray-800 rounded-2xl overflow-hidden shadow-lg">
-        <img id="detail-img" src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800" class="w-full h-full object-cover">
-        <span class="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-md text-[10px] text-white">1/6</span>
-        <button onclick="alert('Favoritado!')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white hover:text-rose-500"><i class="fa-regular fa-heart text-sm"></i></button>
-      </div>
-      <div>
-        <h2 id="detail-title" class="text-lg font-bold text-white">Toyota Corolla 2020</h2>
-        <div class="flex space-x-2 mt-2">
-          <span class="bg-[#0b0f19] border border-gray-800 text-gray-300 text-[10px] px-2.5 py-1 rounded-full">Automático</span>
-          <span class="bg-[#0b0f19] border border-gray-800 text-gray-300 text-[10px] px-2.5 py-1 rounded-full">1.8</span>
-          <span class="bg-[#0b0f19] border border-gray-800 text-gray-300 text-[10px] px-2.5 py-1 rounded-full">Gasolina</span>
-        </div>
-        <p id="detail-price" class="text-2xl font-black text-blue-500 mt-3">R$ 89.900</p>
-        <p id="detail-loc" class="text-xs text-gray-400 mt-1"><i class="fa-solid fa-location-dot"></i> São Paulo - SP</p>
-        <p class="text-[10px] text-gray-500 mt-0.5"><i class="fa-regular fa-clock"></i> Publicado em 10/10/2026</p>
-      </div>
-      <div class="border-t border-gray-800 pt-3">
-        <h3 class="text-xs font-bold text-white mb-1.5">Descrição</h3>
-        <p class="text-xs text-gray-400 leading-relaxed">Carro em ótimo estado, revisões em dia, completo, muito econômico e confortável. Ideal para o dia a dia e viagens.</p>
-      </div>
-      <div class="grid grid-cols-2 gap-2 pt-1 text-[11px] text-gray-300">
-        <div class="bg-[#0b0f19] border border-gray-800 p-2.5 rounded-xl flex items-center space-x-2"><i class="fa-solid fa-snowflake text-blue-400"></i><span>Ar condicionado</span></div>
-        <div class="bg-[#0b0f19] border border-gray-800 p-2.5 rounded-xl flex items-center space-x-2"><i class="fa-solid fa-gauge-high text-blue-400"></i><span>Direção elétrica</span></div>
-        <div class="bg-[#0b0f19] border border-gray-800 p-2.5 rounded-xl flex items-center space-x-2"><i class="fa-solid fa-car-side text-blue-400"></i><span>Vidros elétricos</span></div>
-        <div class="bg-[#0b0f19] border border-gray-800 p-2.5 rounded-xl flex items-center space-x-2"><i class="fa-solid fa-lock text-blue-400"></i><span>Trava elétrica</span></div>
-      </div>
-      <div class="space-y-2 pt-3">
-        <button onclick="switchScreen('screen-messages')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-2xl text-xs flex items-center justify-center space-x-2 shadow-lg"><i class="fa-solid fa-comment"></i><span>Falar com o vendedor</span></button>
-        <button onclick="alert('Iniciando proposta de compra!')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-2xl text-xs flex items-center justify-center space-x-2 shadow-lg"><i class="fa-solid fa-cart-shopping"></i><span>Comprar agora</span></button>
-      </div>
-    </section>
-    <section id="screen-messages" class="screen space-y-4">
-      <h2 class="text-base font-bold text-white">Mensagens</h2>
-      <div class="relative">
-        <input type="text" placeholder="Buscar conversas..." class="w-full bg-[#0b0f19] border border-gray-800 text-xs rounded-xl pl-9 pr-3 py-3 text-white">
-        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-gray-500 text-xs"></i>
-      </div>
-      <div class="space-y-2.5">
-        <div onclick="alert('Abrindo conversa com Carlos Silva...')" class="bg-[#0b0f19] border border-gray-800/80 p-3.5 rounded-2xl flex items-center space-x-3 cursor-pointer">
-          <div class="w-11 h-11 rounded-full bg-gray-700 overflow-hidden flex-shrink-0"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200" class="w-full h-full object-cover"></div>
-          <div class="flex-1 min-w-0">
-            <div class="flex justify-between items-center"><h4 class="text-xs font-bold text-white truncate">Carlos Silva</h4><span class="text-[9px] text-gray-500">09:32</span></div>
-            <p class="text-[10px] text-blue-400 font-medium truncate">Sobre: Toyota Corolla 2020</p>
-            <p class="text-[10px] text-gray-400 truncate mt-0.5">Olá! Ainda está disponível?</p>
-          </div>
-          <span class="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0"></span>
+
+      <h3 style="font-size: 16px; margin-bottom: 12px; color: white;">Destaques</h3>
+      <div class="card-product" onclick="switchScreen('screen-detail')">
+        <img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400">
+        <div class="card-info">
+          <h4 style="font-size: 13px; color: white;">Toyota Corolla 2020</h4>
+          <p class="price">R$ 89.900</p>
+          <p style="font-size: 10px; color: #9ca3af;"><i class="fa-solid fa-location-dot"></i> São Paulo - SP</p>
         </div>
       </div>
     </section>
 
-    <section id="screen-profile" class="screen space-y-4">
-      <div class="flex items-center justify-between bg-[#0b0f19] p-4 border border-gray-800/80 rounded-2xl">
-        <div class="flex items-center space-x-3.5">
-          <div class="w-14 h-14 rounded-full bg-blue-600 overflow-hidden"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200" class="w-full h-full object-cover"></div>
-          <div>
-            <h2 class="text-sm font-bold text-white flex items-center space-x-1.5"><span>Ravel Borges</span> <i class="fa-solid fa-circle-check text-blue-500 text-xs"></i></h2>
-            <span class="text-[10px] bg-blue-500/20 text-blue-400 px-2.5 py-0.5 rounded-full font-semibold">Verificado</span>
-          </div>
+    <!-- TELA 3: BUSCA -->
+    <section id="screen-search" class="screen">
+      <h2 style="font-size: 16px; margin-bottom: 12px; color: white;">Buscar Veículos</h2>
+      <div class="card-product" onclick="switchScreen('screen-detail')">
+        <img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400">
+        <div class="card-info">
+          <h4 style="font-size: 13px; color: white;">Toyota Corolla 2020</h4>
+          <p style="font-size: 10px; color: #9ca3af;">Automático • 1.8 • Gasolina</p>
+          <p class="price">R$ 89.900</p>
         </div>
-        <button onclick="alert('Configurações')" class="text-gray-400 hover:text-white p-2"><i class="fa-solid fa-gear text-lg"></i></button>
       </div>
-      <div class="grid grid-cols-3 gap-2 text-center">
-        <div class="bg-[#0b0f19] border border-gray-800/80 p-3.5 rounded-2xl"><p class="text-base font-black text-white">12</p><p class="text-[9px] text-gray-400 mt-0.5">Anúncios ativos</p></div>
-        <div class="bg-[#0b0f19] border border-gray-800/80 p-3.5 rounded-2xl"><p class="text-base font-black text-white">48</p><p class="text-[9px] text-gray-400 mt-0.5">Seguidores</p></div>
-        <div class="bg-[#0b0f19] border border-gray-800/80 p-3.5 rounded-2xl"><p class="text-base font-black text-white">23</p><p class="text-[9px] text-gray-400 mt-0.5">Compras</p></div>
+      <div class="card-product" onclick="switchScreen('screen-detail')">
+        <img src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=400">
+        <div class="card-info">
+          <h4 style="font-size: 13px; color: white;">Honda Civic 2018</h4>
+          <p style="font-size: 10px; color: #9ca3af;">Automático • 2.0 • Flex</p>
+          <p class="price">R$ 76.900</p>
+        </div>
       </div>
-      <div class="space-y-2">
-        <button class="w-full bg-[#0b0f19] border border-gray-800/80 p-3.5 rounded-2xl text-left text-xs text-gray-200 font-medium flex items-center justify-between"><div class="flex items-center space-x-3"><i class="fa-solid fa-rectangle-ad text-blue-500 w-4"></i><span>Meus anúncios</span></div><i class="fa-solid fa-chevron-right text-xs text-gray-500"></i></button>
-        <button onclick="switchScreen('screen-plans')" class="w-full bg-[#0b0f19] border border-gray-800/80 p-3.5 rounded-2xl text-left text-xs text-gray-200 font-medium flex items-center justify-between"><div class="flex items-center space-x-3"><i class="fa-solid fa-crown text-amber-400 w-4"></i><span>Meus planos</span></div><i class="fa-solid fa-chevron-right text-xs text-gray-500"></i></button>
-        <button class="w-full bg-[#0b0f19] border border-gray-800/80 p-3.5 rounded-2xl text-left text-xs text-gray-200 font-medium flex items-center justify-between"><div class="flex items-center space-x-3"><i class="fa-solid fa-heart text-rose-500 w-4"></i><span>Favoritos</span></div><i class="fa-solid fa-chevron-right text-xs text-gray-500"></i></button>
-        <button class="w-full bg-[#0b0f19] border border-gray-800/80 p-3.5 rounded-2xl text-left text-xs text-gray-200 font-medium flex items-center justify-between"><div class="flex items-center space-x-3"><i class="fa-solid fa-comments text-blue-400 w-4"></i><span>Mensagens</span></div><i class="fa-solid fa-chevron-right text-xs text-gray-500"></i></button>
-      </div>
-      <button onclick="alert('Saindo...')" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-2xl text-xs font-bold shadow-lg">Sair da conta</button>
     </section>
-    <section id="screen-plans" class="screen space-y-4">
-      <div class="text-center">
-        <h2 class="text-base font-bold text-white">Escolha o plano ideal para você</h2>
-        <div class="inline-flex bg-[#0b0f19] border border-gray-800 p-1 rounded-full mt-3">
-          <button class="bg-blue-600 text-white text-xs font-semibold px-5 py-1.5 rounded-full shadow-md">Mensal</button>
-          <button class="text-gray-400 text-xs font-semibold px-5 py-1.5 rounded-full">Anual <span class="text-[9px] text-emerald-400 font-bold">Economize 20%</span></button>
-        </div>
+
+    <!-- TELA 4: DETALHES -->
+    <section id="screen-detail" class="screen">
+      <button onclick="switchScreen('screen-home')" style="background:none; border:none; color:#9ca3af; margin-bottom:12px; cursor:pointer;"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+      <img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800" style="width:100%; height:200px; object-fit:cover; border-radius:16px;">
+      <h2 style="font-size: 18px; margin-top: 12px; color: white;">Toyota Corolla 2020</h2>
+      <p class="price" style="font-size: 22px; margin: 8px 0;">R$ 89.900</p>
+      <p style="font-size: 12px; color: #9ca3af; margin-bottom: 16px;">Carro em ótimo estado, revisões em dia, completo e económico.</p>
+      <button class="btn-action" onclick="alert('Conversa iniciada!')">Falar com o vendedor</button>
+      <button class="btn-action btn-green" onclick="alert('Proposta enviada!')">Comprar agora</button>
+    </section>
+
+    <!-- TELA 6: PERFIL -->
+    <section id="screen-profile" class="screen">
+      <div style="text-align: center; padding: 20px 0;">
+        <div style="width: 70px; height: 70px; background: #2563eb; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; color: white;">RB</div>
+        <h2 style="font-size: 16px; color: white;">Ravel Borges</h2>
+        <p style="font-size: 11px; color: #60a5fa;">Conta Verificada</p>
       </div>
-      <div class="space-y-3">
-        <div class="bg-[#0b0f19] border border-gray-800/80 p-4 rounded-2xl flex justify-between items-center">
-          <div>
-            <h3 class="text-sm font-bold text-white">Gratuito</h3>
-            <p class="text-[10px] text-gray-400 mt-0.5">Anuncie 1 produto por mês</p>
-            <p class="text-base font-black text-white mt-2">R$ 0,00<span class="text-[10px] text-gray-500 font-normal">/mês</span></p>
-          </div>
-          <span class="bg-gray-800 text-gray-300 text-[10px] font-bold px-3 py-1.5 rounded-xl">Plano atual</span>
-        </div>
-        <div class="bg-gradient-to-r from-blue-950/80 to-[#0b0f19] border border-blue-500/50 p-4 rounded-2xl relative shadow-lg">
-          <h3 class="text-sm font-bold text-white flex items-center space-x-1.5"><i class="fa-solid fa-crown text-amber-400"></i><span>Premium</span></h3>
-          <p class="text-[10px] text-blue-200 mt-0.5">Anúncios ilimitados + destaques</p>
-          <p class="text-base font-black text-white mt-2">R$ 19,90<span class="text-[10px] text-blue-300 font-normal">/mês</span></p>
-          <button onclick="alert('Assinando Premium!')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-xs mt-3 shadow-md">Assinar</button>
-        </div>
-        <div class="bg-[#0b0f19] border border-gray-800/80 p-4 rounded-2xl">
-          <h3 class="text-sm font-bold text-white flex items-center space-x-1.5"><i class="fa-solid fa-gem text-blue-400"></i><span>Profissional</span></h3>
-          <p class="text-[10px] text-gray-400 mt-0.5">Recursos avançados + suporte</p>
-          <p class="text-base font-black text-white mt-2">R$ 39,90<span class="text-[10px] text-gray-500 font-normal">/mês</span></p>
-          <button onclick="alert('Assinando Profissional!')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-xs mt-3">Assinar</button>
-        </div>
-      </div>
+      <button class="btn-action" style="background:#374151;" onclick="switchScreen('screen-home')">Sair da conta</button>
     </section>
   </main>
-
-  <nav class="fixed bottom-0 left-0 right-0 bg-[#0b0f19]/95 backdrop-blur-md border-t border-gray-800/80 py-2.5 px-3 z-40">
-    <div class="max-w-md mx-auto flex justify-around items-center">
-      <button onclick="switchScreen('screen-home')" class="flex flex-col items-center text-blue-500"><i class="fa-solid fa-house text-lg"></i><span class="text-[9px] mt-1 font-medium">Início</span></button>
-      <button onclick="switchScreen('screen-search')" class="flex flex-col items-center text-gray-500"><i class="fa-solid fa-magnifying-glass text-lg"></i><span class="text-[9px] mt-1 font-medium">Buscar</span></button>
-      <button onclick="alert('Criar anúncio')" class="flex flex-col items-center text-gray-500"><i class="fa-solid fa-square-plus text-xl text-blue-500"></i><span class="text-[9px] mt-1 font-medium text-gray-400">Anúncios</span></button>
-      <button onclick="switchScreen('screen-messages')" class="flex flex-col items-center text-gray-500"><i class="fa-solid fa-comments text-lg"></i><span class="text-[9px] mt-1 font-medium">Mensagens</span></button>
-      <button onclick="switchScreen('screen-profile')" class="flex flex-col items-center text-gray-500"><i class="fa-solid fa-user text-lg"></i><span class="text-[9px] mt-1 font-medium">Perfil</span></button>
-    </div>
+  <nav class="bottom-nav">
+    <button class="nav-btn active" onclick="switchScreen('screen-home')"><i class="fa-solid fa-house"></i>Início</button>
+    <button class="nav-btn" onclick="switchScreen('screen-search')"><i class="fa-solid fa-magnifying-glass"></i>Buscar</button>
+    <button class="nav-btn" onclick="alert('Novo Anúncio')"><i class="fa-solid fa-square-plus" style="color:#2563eb; font-size:22px;"></i>Anúncios</button>
+    <button class="nav-btn" onclick="switchScreen('screen-detail')"><i class="fa-solid fa-comments"></i>Mensagens</button>
+    <button class="nav-btn" onclick="switchScreen('screen-profile')"><i class="fa-solid fa-user"></i>Perfil</button>
   </nav>
 
   <script>
@@ -308,14 +150,6 @@
       const target = document.getElementById(screenId);
       if(target) target.classList.add('active');
       window.scrollTo(0,0);
-    }
-    function toggleMenu() { document.getElementById('drawer-menu').classList.toggle('hidden'); }
-    function navigateAndClose(screenId) { toggleMenu(); switchScreen(screenId); }
-    function openProduct(title, price, specs, loc) {
-      document.getElementById('detail-title').innerText = title;
-      document.getElementById('detail-price').innerText = price;
-      document.getElementById('detail-loc').innerText = loc;
-      switchScreen('screen-detail');
     }
   </script>
 </body>
