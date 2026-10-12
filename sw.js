@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marckteplace-max-v8';
+const CACHE_NAME = 'marckteplace-max-v10';
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => {
   event.waitUntil(

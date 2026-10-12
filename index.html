@@ -32,7 +32,7 @@
     .card-product img { width: 120px; height: 100px; object-fit: cover; }
     .card-info { padding: 12px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
     .price { font-size: 16px; font-weight: bold; color: #60a5fa; }
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #0b0f19; border-top: 1px solid #1f2937; display: flex; justify-content: space-around; padding: 10px 0; z-index: 50; }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #0b0f19; border-top: 1px solid #1f2937; display: flex; justify-space-around; padding: 10px 0; z-index: 50; }
     .nav-btn { background: none; border: none; color: #6b7280; font-size: 10px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
     .nav-btn.active { color: #3b82f6; }
     .nav-btn i { font-size: 18px; }
@@ -64,7 +64,6 @@
     .plan-card { background: #030712; border: 1px solid #1f2937; border-radius: 16px; padding: 16px; margin-bottom: 12px; position: relative; }
     .plan-card.gold { border-color: #eab308; background: linear-gradient(135deg, #0b0f19, #1c1917); }
     .plan-badge { position: absolute; top: 12px; right: 12px; background: #eab308; color: #000; font-size: 9px; font-weight: bold; padding: 3px 8px; border-radius: 20px; }
-    .pix-box { background: #030712; border: 1px solid #374151; border-radius: 12px; padding: 14px; text-align: center; margin-top: 12px; }
   </style>
 </head>
 <body>
@@ -106,41 +105,29 @@
           <div><h3>Outros</h3><p>Diversos</p></div>
         </div>
       </div>
-      <h3 style="font-size: 16px; margin-bottom: 12px; color: white;">Destaques</h3>
-      <div class="card-product" onclick="switchScreen('screen-detail')">
-        <img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400">
-        <div class="card-info">
-          <h4 style="font-size: 13px; color: white;">Toyota Corolla 2020</h4>
-          <p class="price">R$ 89.900</p>
-          <p style="font-size: 10px; color: #9ca3af;"><i class="fa-solid fa-location-dot"></i> São Paulo - SP</p>
-        </div>
+      <h3 style="font-size: 16px; margin-bottom: 12px; color: white;">Destaques Recentes</h3>
+      <div id="ad-list">
+        <!-- Anúncios serão inseridos dinamicamente aqui -->
       </div>
     </section>
 
     <section id="screen-search" class="screen">
       <h2 style="font-size: 16px; margin-bottom: 12px; color: white;">Buscar Anúncios</h2>
-      <div class="card-product" onclick="switchScreen('screen-detail')">
-        <img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400">
-        <div class="card-info">
-          <h4 style="font-size: 13px; color: white;">Toyota Corolla 2020</h4>
-          <p style="font-size: 10px; color: #9ca3af;">Automático • 1.8 • Gasolina</p>
-          <p class="price">R$ 89.900</p>
-        </div>
+      <div id="search-list">
+        <!-- Lista de busca -->
       </div>
     </section>
 
     <section id="screen-detail" class="screen">
       <button onclick="switchScreen('screen-home')" style="background:none; border:none; color:#9ca3af; margin-bottom:12px; cursor:pointer;"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-      <img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800" style="width:100%; height:200px; object-fit:cover; border-radius:16px;">
-      <h2 style="font-size: 18px; margin-top: 12px; color: white;">Toyota Corolla 2020</h2>
-      <p class="price" style="font-size: 22px; margin: 8px 0;">R$ 89.900</p>
-      <button class="btn-action" onclick="alert('Conversa iniciada!')">Falar com o vendedor</button>
+      <div id="detail-content"></div>
     </section>
 
     <section id="screen-profile" class="screen">
       <div style="text-align: center; padding: 20px 0;">
-        <div style="width: 70px; height: 70px; background: #2563eb; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; color: white;">RB</div>
-        <h2 style="font-size: 16px; color: white;">Ravel Borges</h2>
+        <div style="width: 70px; height: 70px; background: #2563eb; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; color: white;">MM</div>
+        <h2 style="font-size: 16px; color: white;">Marckteplace Max User</h2>
+        <p style="font-size: 11px; color: #9ca3af; margin-top: 4px;">Suporte: Marckteplacemaxfinanceiromarck@gmail.com</p>
       </div>
       <button class="btn-action" style="background:#374151;" onclick="switchScreen('screen-home')">Sair da conta</button>
     </section>
@@ -150,17 +137,17 @@
     <div class="modal-card">
       <h2><span>Criar Anúncio</span><i class="fa-solid fa-xmark" onclick="toggleAdModal()" style="cursor:pointer; color:#9ca3af;"></i></h2>
       <div class="form-group">
-        <label>Adicionar Fotos (Veículo, Celular, etc.)</label>
+        <label>Adicionar Foto</label>
         <div class="photo-upload-box" onclick="document.getElementById('file-input').click()">
           <i class="fa-solid fa-camera"></i>
-          <p>Tocar para carregar fotos da galeria</p>
+          <p>Tocar para carregar foto da galeria</p>
           <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="previewPhoto(event)">
         </div>
         <div id="photo-preview" style="margin-top: 8px; font-size: 11px; color: #60a5fa; text-align: center;"></div>
       </div>
       <div class="form-group">
         <label>Título do Anúncio</label>
-        <input type="text" id="ad-title" placeholder="Ex: iPhone 13 ou Carro Sedan">
+        <input type="text" id="ad-title" placeholder="Ex: iPhone 13 Pro Max ou Toyota Corolla">
       </div>
       <div class="form-group">
         <label>Categoria</label>
@@ -173,7 +160,7 @@
       </div>
       <div class="form-group">
         <label>Preço (R$)</label>
-        <input type="number" id="ad-price" placeholder="0,00">
+        <input type="number" id="ad-price" placeholder="Ex: 1500">
       </div>
       <div class="form-group">
         <label>Descrição</label>
@@ -193,7 +180,7 @@
         <p style="font-size:18px; font-weight:bold; color:#60a5fa; margin: 4px 0;">R$ 0,00 <span style="font-size:10px; color:#9ca3af;">/mês</span></p>
         <p style="font-size:11px; color:#9ca3af;">• Até 3 anúncios ativos</p>
         <p style="font-size:11px; color:#9ca3af;">• Visibilidade padrão</p>
-        <button class="btn-action" style="background:#374151; margin-top:10px;" onclick="alert('Já está no plano Grátis!')">Plano Atual</button>
+        <button class="btn-action" style="background:#374151; margin-top:10px;" onclick="alert('Você já está no plano Grátis!')">Plano Atual</button>
       </div>
 
       <div class="plan-card gold">
@@ -208,19 +195,19 @@
     </div>
   </div>
 
-  <!-- MODAL DE PAGAMENTO PIX -->
+  <!-- MODAL DE PAGAMENTO PIX OFICIAL -->
   <div id="modal-pix" class="modal-overlay">
     <div class="modal-card" style="text-align: center;">
       <h2><span>Pagamento via PIX</span><i class="fa-solid fa-xmark" onclick="togglePixModal()" style="cursor:pointer; color:#9ca3af;"></i></h2>
-      <p style="font-size: 12px; color: #9ca3af; margin-bottom: 12px;">Escaneie o QR Code ou copie a chave Pix abaixo para ativar o Plano VIP Gold (R$ 29,90):</p>
+      <p style="font-size: 12px; color: #9ca3af; margin-bottom: 12px;">Escaneie o QR Code ou copie a chave Pix da nossa empresa para ativar o Plano VIP Gold (R$ 29,90):</p>
       
       <div style="background: white; padding: 12px; border-radius: 12px; display: inline-block; margin-bottom: 12px;">
         <i class="fa-solid fa-qrcode" style="font-size: 100px; color: black;"></i>
       </div>
 
       <div class="form-group" style="text-align: left;">
-        <label>Chave Pix (E-mail / CNPJ / Copia e Cola)</label>
-        <input type="text" id="pix-key" value="pix@marckteplacemax.com.br" readonly style="text-align: center; font-weight: bold; color: #60a5fa;">
+        <label>Chave Pix Oficial (E-mail)</label>
+        <input type="text" id="pix-key" value="Marckteplacemaxfinanceiromarck@gmail.com" readonly style="text-align: center; font-weight: bold; color: #60a5fa; font-size: 11px;">
       </div>
 
       <button class="btn-action" style="background: #059669;" onclick="copyPixKey()">Copiar Chave Pix</button>
@@ -254,47 +241,124 @@
 
   <script>
     if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
+
+    let ads = [
+      {
+        id: 1,
+        title: "Toyota Corolla 2020",
+        price: "89.900",
+        cat: "Veículos",
+        img: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400",
+        desc: "Automático • 1.8 • Gasolina • Completo com ar condicionado e direção hidraúlica."
+      }
+    ];
+
+    let currentPhoto = "";
+
+    function renderAds() {
+      const container = document.getElementById('ad-list');
+      const searchContainer = document.getElementById('search-list');
+      container.innerHTML = "";
+      searchContainer.innerHTML = "";
+
+      ads.forEach(ad => {
+        const html = `
+          <div class="card-product" onclick="openDetail(${ad.id})">
+            <img src="${ad.img}">
+            <div class="card-info">
+              <h4 style="font-size: 13px; color: white;">${ad.title}</h4>
+              <p class="price">R$ ${ad.price}</p>
+              <p style="font-size: 10px; color: #9ca3af;"><i class="fa-solid fa-tag"></i> ${ad.cat}</p>
+            </div>
+          </div>
+        `;
+        container.innerHTML += html;
+        searchContainer.innerHTML += html;
+      });
+    }
+
+    function openDetail(id) {
+      const ad = ads.find(a => a.id === id);
+      if(!ad) return;
+      const detail = document.getElementById('detail-content');
+      detail.innerHTML = `
+        <img src="${ad.img}" style="width:100%; height:220px; object-fit:cover; border-radius:16px;">
+        <h2 style="font-size: 18px; margin-top: 12px; color: white;">${ad.title}</h2>
+        <p class="price" style="font-size: 22px; margin: 8px 0;">R$ ${ad.price}</p>
+        <p style="font-size: 12px; color: #9ca3af; margin-bottom: 16px;">${ad.desc}</p>
+        <button class="btn-action" onclick="alert('Conversa iniciada com o vendedor!')">Falar com o vendedor</button>
+      `;
+      switchScreen('screen-detail');
+    }
+
     function switchScreen(screenId) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       const target = document.getElementById(screenId);
       if(target) target.classList.add('active');
       window.scrollTo(0,0);
     }
-    function toggleAdModal() {
-      document.getElementById('modal-ad').classList.toggle('open');
-    }
-    function togglePlansModal() {
-      document.getElementById('modal-plans').classList.toggle('open');
-    }
-    function openPixModal() {
-      togglePlansModal();
-      document.getElementById('modal-pix').classList.add('open');
-    }
-    function togglePixModal() {
-      document.getElementById('modal-pix').classList.toggle('open');
-    }
+
+    function toggleAdModal() { document.getElementById('modal-ad').classList.toggle('open'); }
+    function togglePlansModal() { document.getElementById('modal-plans').classList.toggle('open'); }
+    function openPixModal() { togglePlansModal(); document.getElementById('modal-pix').classList.add('open'); }
+    function togglePixModal() { document.getElementById('modal-pix').classList.toggle('open'); }
     function toggleDrawer() {
       document.getElementById('drawer-overlay').classList.toggle('open');
       document.getElementById('drawer').classList.toggle('open');
     }
+
     function previewPhoto(event) {
       const file = event.target.files[0];
       if (file) {
-        document.getElementById('photo-preview').innerText = "Foto selecionada: " + file.name;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          currentPhoto = e.target.result;
+          document.getElementById('photo-preview').innerText = "Foto selecionada: " + file.name;
+        };
+        reader.readAsDataURL(file);
       }
     }
+
     function copyPixKey() {
       const pixInput = document.getElementById('pix-key');
       pixInput.select();
       navigator.clipboard.writeText(pixInput.value);
-      alert('Chave Pix copiada com sucesso!');
+      alert('Chave Pix oficial copiada!');
     }
+
     function publishAd() {
       const title = document.getElementById('ad-title').value;
-      if(!title) { alert('Por favor, informe o título do anúncio!'); return; }
+      const price = document.getElementById('ad-price').value;
+      const cat = document.getElementById('ad-cat').value;
+      const desc = document.getElementById('ad-desc').value;
+
+      if(!title || !price) { alert('Informe o título e o preço!'); return; }
+
+      const newAd = {
+        id: Date.now(),
+        title: title,
+        price: price,
+        cat: cat,
+        img: currentPhoto || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400",
+        desc: desc || "Sem descrição informada."
+      };
+
+      ads.unshift(newAd);
+      renderAds();
       alert('Anúncio publicado com sucesso!');
+      
+      document.getElementById('ad-title').value = "";
+      document.getElementById('ad-price').value = "";
+      document.getElementById('ad-desc').value = "";
+      document.getElementById('photo-preview').innerText = "";
+      currentPhoto = "";
+
       toggleAdModal();
+      switchScreen('screen-home');
     }
+
+    // Inicializar lista de anúncios
+    renderAds();
   </script>
 </body>
 </html>
