@@ -1,23 +1,18 @@
-const CACHE_NAME = 'marckteplace-max-v2';
-const urlsToCache = [
-  './',
-  './index.html',
-  './planos.html',
-  './manifest.json',
-  './icon-192.svg',
-  './icon-512.svg'
-];
-
+const CACHE_NAME = 'marckteplace-max-v4';
 self.addEventListener('install', event => {
+  self.skipWaiting();
+});
+self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => caches.delete(cacheName))
+      );
+    }).then(() => self.clients.claim())
   );
 });
-
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request)
-      .then(response => response || fetch(event.request))
+    fetch(event.request).catch(() => caches.match(event.request))
   );
 });
