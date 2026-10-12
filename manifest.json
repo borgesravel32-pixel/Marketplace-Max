@@ -1,21 +1,25 @@
 {
   "short_name": "MarckteplaceMax",
   "name": "Marckteplace Max - Venda Mais",
-  "icons": [
-    {
-      "src": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=192",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=512",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
-  ],
+  "description": "Compre e venda carros, motos, imóveis e eletrônicos no Marckteplace Max.",
   "start_url": "/Marketplace-Max/",
+  "scope": "/Marketplace-Max/",
+  "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#030712",
   "theme_color": "#030712",
-  "display": "standalone",
-  "orientation": "portrait"
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/borgesravel32-pixel/Marketplace-Max/main/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/borgesravel32-pixel/Marketplace-Max/main/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }
