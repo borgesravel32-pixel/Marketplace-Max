@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+    <rect width="192" height="192" rx="38" fill="#030712"/>
+    <path d="M48 144 L76.80000000000001 57.599999999999994 L96 105.60000000000001 L115.19999999999999 57.599999999999994 L144 144 Z" fill="#2563eb"/>
+    <text x="50%" y="85%" font-family="sans-serif" font-weight="bold" font-size="23" fill="#ffffff" text-anchor="middle">MAX</text>
+  </svg>
