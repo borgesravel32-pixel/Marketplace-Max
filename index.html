@@ -185,3 +185,176 @@
   </script>
 </body>
 </html>
+  <main>
+    <section id="screen-home" class="screen active">
+      <div class="banner">
+        <h2>O lugar certo para você <span style="color: #60a5fa;">comprar e vender!</span></h2>
+        <p>Carros, motos, imóveis e muito mais.</p>
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="O que procura hoje?" onclick="switchScreen('screen-search')">
+        </div>
+      </div>
+      <div class="grid-cat">
+        <div class="cat-card cat-blue" onclick="switchScreen('screen-search')">
+          <i class="fa-solid fa-car" style="font-size: 20px;"></i>
+          <div><h3>Veículos</h3><p>Carros e motos</p></div>
+        </div>
+        <div class="cat-card cat-green" onclick="switchScreen('screen-search')">
+          <i class="fa-solid fa-house" style="font-size: 20px;"></i>
+          <div><h3>Imóveis</h3><p>Casas e aptos</p></div>
+        </div>
+        <div class="cat-card cat-purple" onclick="switchScreen('screen-search')">
+          <i class="fa-solid fa-bag-shopping" style="font-size: 20px;"></i>
+          <div><h3>Acessórios</h3><p>Eletrónicos</p></div>
+        </div>
+        <div class="cat-card cat-orange" onclick="switchScreen('screen-search')">
+          <i class="fa-solid fa-boxes-stacked" style="font-size: 20px;"></i>
+          <div><h3>Outros</h3><p>Diversos</p></div>
+        </div>
+      </div>
+      <h3 style="font-size: 16px; margin-bottom: 12px; color: white;">Destaques</h3>
+      <div class="card-product" onclick="switchScreen('screen-detail')">
+        <img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400">
+        <div class="card-info">
+          <h4 style="font-size: 13px; color: white;">Toyota Corolla 2020</h4>
+          <p class="price">R$ 89.900</p>
+          <p style="font-size: 10px; color: #9ca3af;"><i class="fa-solid fa-location-dot"></i> São Paulo - SP</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-search" class="screen">
+      <h2 style="font-size: 16px; margin-bottom: 12px; color: white;">Buscar Anúncios</h2>
+      <div class="card-product" onclick="switchScreen('screen-detail')">
+        <img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400">
+        <div class="card-info">
+          <h4 style="font-size: 13px; color: white;">Toyota Corolla 2020</h4>
+          <p style="font-size: 10px; color: #9ca3af;">Automático • 1.8 • Gasolina</p>
+          <p class="price">R$ 89.900</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-detail" class="screen">
+      <button onclick="switchScreen('screen-home')" style="background:none; border:none; color:#9ca3af; margin-bottom:12px; cursor:pointer;"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+      <img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800" style="width:100%; height:200px; object-fit:cover; border-radius:16px;">
+      <h2 style="font-size: 18px; margin-top: 12px; color: white;">Toyota Corolla 2020</h2>
+      <p class="price" style="font-size: 22px; margin: 8px 0;">R$ 89.900</p>
+      <button class="btn-action" onclick="alert('Conversa iniciada!')">Falar com o vendedor</button>
+    </section>
+
+    <section id="screen-profile" class="screen">
+      <div style="text-align: center; padding: 20px 0;">
+        <div style="width: 70px; height: 70px; background: #2563eb; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; color: white;">RB</div>
+        <h2 style="font-size: 16px; color: white;">Ravel Borges</h2>
+      </div>
+      <button class="btn-action" style="background:#374151;" onclick="switchScreen('screen-home')">Sair da conta</button>
+    </section>
+  </main>
+  <div id="modal-ad" class="modal-overlay">
+    <div class="modal-card">
+      <h2><span>Criar Anúncio</span><i class="fa-solid fa-xmark" onclick="toggleAdModal()" style="cursor:pointer; color:#9ca3af;"></i></h2>
+      <div class="form-group">
+        <label>Adicionar Fotos (Veículo, Celular, etc.)</label>
+        <div class="photo-upload-box" onclick="document.getElementById('file-input').click()">
+          <i class="fa-solid fa-camera"></i>
+          <p>Tocar para carregar fotos da galeria</p>
+          <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="previewPhoto(event)">
+        </div>
+        <div id="photo-preview" style="margin-top: 8px; font-size: 11px; color: #60a5fa; text-align: center;"></div>
+      </div>
+      <div class="form-group">
+        <label>Título do Anúncio</label>
+        <input type="text" id="ad-title" placeholder="Ex: iPhone 13 ou Carro Sedan">
+      </div>
+      <div class="form-group">
+        <label>Categoria</label>
+        <select id="ad-cat">
+          <option>Veículos</option>
+          <option>Imóveis</option>
+          <option>Acessórios / Celulares</option>
+          <option>Outros</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Preço (R$)</label>
+        <input type="number" id="ad-price" placeholder="0,00">
+      </div>
+      <div class="form-group">
+        <label>Descrição</label>
+        <textarea id="ad-desc" rows="3" placeholder="Estado de conservação, detalhes..."></textarea>
+      </div>
+      <button class="btn-action" onclick="publishAd()">Publicar Anúncio</button>
+    </div>
+  </div>
+  <div id="modal-ad" class="modal-overlay">
+    <div class="modal-card">
+      <h2><span>Criar Anúncio</span><i class="fa-solid fa-xmark" onclick="toggleAdModal()" style="cursor:pointer; color:#9ca3af;"></i></h2>
+      <div class="form-group">
+        <label>Adicionar Fotos (Veículo, Celular, etc.)</label>
+        <div class="photo-upload-box" onclick="document.getElementById('file-input').click()">
+          <i class="fa-solid fa-camera"></i>
+          <p>Tocar para carregar fotos da galeria</p>
+          <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="previewPhoto(event)">
+        </div>
+        <div id="photo-preview" style="margin-top: 8px; font-size: 11px; color: #60a5fa; text-align: center;"></div>
+      </div>
+      <div class="form-group">
+        <label>Título do Anúncio</label>
+        <input type="text" id="ad-title" placeholder="Ex: iPhone 13 ou Carro Sedan">
+      </div>
+      <div class="form-group">
+        <label>Categoria</label>
+        <select id="ad-cat">
+          <option>Veículos</option>
+          <option>Imóveis</option>
+          <option>Acessórios / Celulares</option>
+          <option>Outros</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Preço (R$)</label>
+        <input type="number" id="ad-price" placeholder="0,00">
+      </div>
+      <div class="form-group">
+        <label>Descrição</label>
+        <textarea id="ad-desc" rows="3" placeholder="Estado de conservação, detalhes..."></textarea>
+      </div>
+      <button class="btn-action" onclick="publishAd()">Publicar Anúncio</button>
+    </div>
+  </div>
+  <nav class="bottom-nav">
+    <button class="nav-btn active" onclick="switchScreen('screen-home')"><i class="fa-solid fa-house"></i>Início</button>
+    <button class="nav-btn" onclick="switchScreen('screen-search')"><i class="fa-solid fa-magnifying-glass"></i>Buscar</button>
+    <button class="nav-btn" onclick="toggleAdModal()"><i class="fa-solid fa-square-plus" style="color:#2563eb; font-size:22px;"></i>Anúncios</button>
+    <button class="nav-btn" onclick="switchScreen('screen-detail')"><i class="fa-solid fa-comments"></i>Mensagens</button>
+    <button class="nav-btn" onclick="switchScreen('screen-profile')"><i class="fa-solid fa-user"></i>Perfil</button>
+  </nav>
+
+  <script>
+    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
+    function switchScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById(screenId);
+      if(target) target.classList.add('active');
+      window.scrollTo(0,0);
+    }
+    function toggleAdModal() {
+      document.getElementById('modal-ad').classList.toggle('open');
+    }
+    function previewPhoto(event) {
+      const file = event.target.files[0];
+      if (file) {
+        document.getElementById('photo-preview').innerText = "Foto selecionada: " + file.name;
+      }
+    }
+    function publishAd() {
+      const title = document.getElementById('ad-title').value;
+      if(!title) { alert('Por favor, informe o título do anúncio!'); return; }
+      alert('Anúncio publicado com sucesso!');
+      toggleAdModal();
+    }
+  </script>
+</body>
+</html>
