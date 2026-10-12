@@ -38,7 +38,7 @@
     .nav-btn i { font-size: 18px; }
     .btn-action { width: 100%; background: #2563eb; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: bold; margin-top: 8px; cursor: pointer; }
     
-    /* MODAL DE ANÚNCIO */
+    /* MODAIS */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); z-index: 60; display: none; align-items: center; justify-content: center; padding: 16px; overflow-y: auto; }
     .modal-overlay.open { display: flex; }
     .modal-card { background: #0b0f19; border: 1px solid #1f2937; border-radius: 20px; width: 100%; max-width: 420px; padding: 20px; color: white; max-height: 90vh; overflow-y: auto; }
@@ -59,6 +59,11 @@
     .drawer-item { display: flex; align-items: center; gap: 12px; padding: 12px; color: #f3f4f6; text-decoration: none; border-radius: 10px; font-size: 13px; font-weight: 500; cursor: pointer; margin-bottom: 6px; }
     .drawer-item:hover { background: #111827; }
     .drawer-item i { font-size: 16px; color: #60a5fa; width: 20px; }
+
+    /* CARTOES DE PLANOS VIP */
+    .plan-card { background: #030712; border: 1px solid #1f2937; border-radius: 16px; padding: 16px; margin-bottom: 12px; position: relative; }
+    .plan-card.gold { border-color: #eab308; background: linear-gradient(135deg, #0b0f19, #1c1917); }
+    .plan-badge { position: absolute; top: 12px; right: 12px; background: #eab308; color: #000; font-size: 9px; font-weight: bold; padding: 3px 8px; border-radius: 20px; }
   </style>
 </head>
 <body>
@@ -177,6 +182,31 @@
     </div>
   </div>
 
+  <!-- MODAL DE PLANOS VIP -->
+  <div id="modal-plans" class="modal-overlay">
+    <div class="modal-card">
+      <h2><span>Planos & Destaques Premium</span><i class="fa-solid fa-xmark" onclick="togglePlansModal()" style="cursor:pointer; color:#9ca3af;"></i></h2>
+      
+      <div class="plan-card">
+        <h3 style="font-size:14px; color:white;">Plano Grátis</h3>
+        <p style="font-size:18px; font-weight:bold; color:#60a5fa; margin: 4px 0;">R$ 0,00 <span style="font-size:10px; color:#9ca3af;">/mês</span></p>
+        <p style="font-size:11px; color:#9ca3af;">• Até 3 anúncios ativos</p>
+        <p style="font-size:11px; color:#9ca3af;">• Visibilidade padrão</p>
+        <button class="btn-action" style="background:#374151; margin-top:10px;" onclick="selectPlan('Grátis')">Plano Atual</button>
+      </div>
+
+      <div class="plan-card gold">
+        <span class="plan-badge">MAIS POPULAR</span>
+        <h3 style="font-size:14px; color:#eab308;"><i class="fa-solid fa-crown"></i> Plano VIP Gold</h3>
+        <p style="font-size:18px; font-weight:bold; color:#eab308; margin: 4px 0;">R$ 29,90 <span style="font-size:10px; color:#9ca3af;">/mês</span></p>
+        <p style="font-size:11px; color:#d1d5db;">• Anúncios ILIMITADOS</p>
+        <p style="font-size:11px; color:#d1d5db;">• Anúncios em Destaque no topo</p>
+        <p style="font-size:11px; color:#d1d5db;">• Selo de Vendedor Verificado</p>
+        <button class="btn-action" style="background:linear-gradient(135deg, #eab308, #ca8a04); color:#000; margin-top:10px;" onclick="selectPlan('VIP Gold')">Assinar Agora</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MENU LATERAL DRAWER -->
   <div id="drawer-overlay" class="drawer-overlay" onclick="toggleDrawer()"></div>
   <div id="drawer" class="drawer">
@@ -189,7 +219,7 @@
       <div class="drawer-item" onclick="toggleAdModal(); toggleDrawer();"><i class="fa-solid fa-rectangle-ad"></i> Meus Anúncios</div>
       <div class="drawer-item" onclick="switchScreen('screen-search'); toggleDrawer();"><i class="fa-solid fa-star"></i> Favoritos</div>
       <div class="drawer-item" onclick="switchScreen('screen-detail'); toggleDrawer();"><i class="fa-solid fa-comments"></i> Mensagens</div>
-      <div class="drawer-item" onclick="alert('Planos e Destaques'); toggleDrawer();"><i class="fa-solid fa-crown" style="color:#eab308;"></i> Planos VIP</div>
+      <div class="drawer-item" onclick="togglePlansModal(); toggleDrawer();"><i class="fa-solid fa-crown" style="color:#eab308;"></i> Planos VIP</div>
     </div>
     <button class="btn-action" style="background:#dc2626;" onclick="switchScreen('screen-home'); toggleDrawer();"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
   </div>
@@ -212,6 +242,9 @@
     function toggleAdModal() {
       document.getElementById('modal-ad').classList.toggle('open');
     }
+    function togglePlansModal() {
+      document.getElementById('modal-plans').classList.toggle('open');
+    }
     function toggleDrawer() {
       document.getElementById('drawer-overlay').classList.toggle('open');
       document.getElementById('drawer').classList.toggle('open');
@@ -221,6 +254,10 @@
       if (file) {
         document.getElementById('photo-preview').innerText = "Foto selecionada: " + file.name;
       }
+    }
+    function selectPlan(planName) {
+      alert('Você selecionou o plano: ' + planName);
+      togglePlansModal();
     }
     function publishAd() {
       const title = document.getElementById('ad-title').value;
