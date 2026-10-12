@@ -60,10 +60,11 @@
     .drawer-item:hover { background: #111827; }
     .drawer-item i { font-size: 16px; color: #60a5fa; width: 20px; }
 
-    /* CARTOES DE PLANOS VIP */
+    /* PLANOS E PIX */
     .plan-card { background: #030712; border: 1px solid #1f2937; border-radius: 16px; padding: 16px; margin-bottom: 12px; position: relative; }
     .plan-card.gold { border-color: #eab308; background: linear-gradient(135deg, #0b0f19, #1c1917); }
     .plan-badge { position: absolute; top: 12px; right: 12px; background: #eab308; color: #000; font-size: 9px; font-weight: bold; padding: 3px 8px; border-radius: 20px; }
+    .pix-box { background: #030712; border: 1px solid #374151; border-radius: 12px; padding: 14px; text-align: center; margin-top: 12px; }
   </style>
 </head>
 <body>
@@ -192,7 +193,7 @@
         <p style="font-size:18px; font-weight:bold; color:#60a5fa; margin: 4px 0;">R$ 0,00 <span style="font-size:10px; color:#9ca3af;">/mês</span></p>
         <p style="font-size:11px; color:#9ca3af;">• Até 3 anúncios ativos</p>
         <p style="font-size:11px; color:#9ca3af;">• Visibilidade padrão</p>
-        <button class="btn-action" style="background:#374151; margin-top:10px;" onclick="selectPlan('Grátis')">Plano Atual</button>
+        <button class="btn-action" style="background:#374151; margin-top:10px;" onclick="alert('Já está no plano Grátis!')">Plano Atual</button>
       </div>
 
       <div class="plan-card gold">
@@ -202,8 +203,28 @@
         <p style="font-size:11px; color:#d1d5db;">• Anúncios ILIMITADOS</p>
         <p style="font-size:11px; color:#d1d5db;">• Anúncios em Destaque no topo</p>
         <p style="font-size:11px; color:#d1d5db;">• Selo de Vendedor Verificado</p>
-        <button class="btn-action" style="background:linear-gradient(135deg, #eab308, #ca8a04); color:#000; margin-top:10px;" onclick="selectPlan('VIP Gold')">Assinar Agora</button>
+        <button class="btn-action" style="background:linear-gradient(135deg, #eab308, #ca8a04); color:#000; margin-top:10px;" onclick="openPixModal()">Assinar com PIX</button>
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE PAGAMENTO PIX -->
+  <div id="modal-pix" class="modal-overlay">
+    <div class="modal-card" style="text-align: center;">
+      <h2><span>Pagamento via PIX</span><i class="fa-solid fa-xmark" onclick="togglePixModal()" style="cursor:pointer; color:#9ca3af;"></i></h2>
+      <p style="font-size: 12px; color: #9ca3af; margin-bottom: 12px;">Escaneie o QR Code ou copie a chave Pix abaixo para ativar o Plano VIP Gold (R$ 29,90):</p>
+      
+      <div style="background: white; padding: 12px; border-radius: 12px; display: inline-block; margin-bottom: 12px;">
+        <i class="fa-solid fa-qrcode" style="font-size: 100px; color: black;"></i>
+      </div>
+
+      <div class="form-group" style="text-align: left;">
+        <label>Chave Pix (E-mail / CNPJ / Copia e Cola)</label>
+        <input type="text" id="pix-key" value="pix@marckteplacemax.com.br" readonly style="text-align: center; font-weight: bold; color: #60a5fa;">
+      </div>
+
+      <button class="btn-action" style="background: #059669;" onclick="copyPixKey()">Copiar Chave Pix</button>
+      <button class="btn-action" style="background: #374151; margin-top: 6px;" onclick="togglePixModal()">Já fiz o pagamento</button>
     </div>
   </div>
 
@@ -245,6 +266,13 @@
     function togglePlansModal() {
       document.getElementById('modal-plans').classList.toggle('open');
     }
+    function openPixModal() {
+      togglePlansModal();
+      document.getElementById('modal-pix').classList.add('open');
+    }
+    function togglePixModal() {
+      document.getElementById('modal-pix').classList.toggle('open');
+    }
     function toggleDrawer() {
       document.getElementById('drawer-overlay').classList.toggle('open');
       document.getElementById('drawer').classList.toggle('open');
@@ -255,9 +283,11 @@
         document.getElementById('photo-preview').innerText = "Foto selecionada: " + file.name;
       }
     }
-    function selectPlan(planName) {
-      alert('Você selecionou o plano: ' + planName);
-      togglePlansModal();
+    function copyPixKey() {
+      const pixInput = document.getElementById('pix-key');
+      pixInput.select();
+      navigator.clipboard.writeText(pixInput.value);
+      alert('Chave Pix copiada com sucesso!');
     }
     function publishAd() {
       const title = document.getElementById('ad-title').value;
